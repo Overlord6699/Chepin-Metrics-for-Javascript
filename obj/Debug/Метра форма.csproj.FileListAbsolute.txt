@@ -1,0 +1,10 @@
+C:\Users\Илья\source\repos\Метра форма\bin\Debug\Метра форма.exe.config
+C:\Users\Илья\source\repos\Метра форма\bin\Debug\Метра форма.exe
+C:\Users\Илья\source\repos\Метра форма\bin\Debug\Метра форма.pdb
+C:\Users\Илья\source\repos\Метра форма\obj\Debug\Метра форма.csproj.AssemblyReference.cache
+C:\Users\Илья\source\repos\Метра форма\obj\Debug\Метра_форма.Properties.Resources.resources
+C:\Users\Илья\source\repos\Метра форма\obj\Debug\Метра форма.csproj.GenerateResource.cache
+C:\Users\Илья\source\repos\Метра форма\obj\Debug\Метра форма.csproj.CoreCompileInputs.cache
+C:\Users\Илья\source\repos\Метра форма\obj\Debug\Метра форма.exe
+C:\Users\Илья\source\repos\Метра форма\obj\Debug\Метра форма.pdb
+C:\Users\Илья\source\repos\Метра форма\obj\Debug\Метра_форма.Form1.resources
