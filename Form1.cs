@@ -26,7 +26,7 @@ namespace Метра_форма
             Управляющая = 4,
             Используемая = 8,
 
-            Выводимая = 20,
+            Выводимая = 16,
             Ввод = 40
         }
 
@@ -485,11 +485,11 @@ namespace Метра_форма
                 case "write":
                 case "confirm":
                 case "alert":
-                    AnalyzeMethod(ref str, ref pos, VaribleKind.Выводимая, ref global);
+                    AnalyzeMethod(ref str, ref pos, VaribleKind.Выводимая|VaribleKind.Используемая, ref global);
                     break;
                 //ввод
                 case "prompt":
-                    AnalyzeMethod(ref str, ref pos, VaribleKind.Ввод, ref global);
+                    AnalyzeMethod(ref str, ref pos, VaribleKind.Ввод|VaribleKind.Используемая, ref global);
                     break;
 
                 default: //сюда попадают переменные
