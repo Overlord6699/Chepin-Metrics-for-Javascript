@@ -53,7 +53,7 @@ namespace Метра_форма
 
         public  Vareble[] GlobalVaribles = new Vareble[0];
         public  Vareble[] LocalVaribles = new Vareble[0];
-        public  string[] DescriptionWords = { "const", "{", "function", "type", "uses", "label", "let" };
+        public  string[] DescriptionWords = { "const", "{", "function", "type", "uses", "label", "let", "var" };
         public  string[] WordsOfEndOperator = { "do", "{", "else", "}" };
         public  int beginEndCounter = 0;   //если был найден begin, то +1; если end, то -1
         public  int totalP = 0, totalM = 0, totalC = 0, totalT = 0;
@@ -319,10 +319,20 @@ namespace Метра_форма
         }
 
         /*определяет назначение переменных в подпрограммах*/
-        public void AnalyzeMethod(ref string str, ref int pos, VaribleKind kind)
+        public void AnalyzeMethod(ref string str, ref int pos, VaribleKind kind, ref bool global)
         {
             string ident;
             char symbol;
+
+            if (str[pos] == '.')
+            {
+                ident = FindNextIdentifier(ref str, ref pos, false);
+
+                AnalyzeOperator(ref str, ref pos, ref ident, ref global);
+
+                return;
+            }
+            else
             do
             {
                 //проверка параметров
@@ -432,6 +442,7 @@ namespace Метра_форма
 
             switch (ident.ToLower())
             {
+                case "new":
                 case "do":
                 case "else":
                 case "default":
@@ -471,27 +482,26 @@ namespace Метра_форма
 
                     break;
                 //вывод
+                case "write":
                 case "confirm":
-                    AnalyzeMethod(ref str, ref pos, VaribleKind.Выводимая);
-                    break;
                 case "alert":
-                    AnalyzeMethod(ref str, ref pos, VaribleKind.Выводимая);
+                    AnalyzeMethod(ref str, ref pos, VaribleKind.Выводимая, ref global);
                     break;
                 //ввод
                 case "prompt":
-                    AnalyzeMethod(ref str, ref pos, VaribleKind.Ввод);
+                    AnalyzeMethod(ref str, ref pos, VaribleKind.Ввод, ref global);
                     break;
 
                 default: //сюда попадают переменные
                     if (DetermineVarible(ident, VaribleKind.Паразитная))
                         AnalyzeAssignmentOperator(ref str, ref pos, ref ident);  //оператор присваивания
                     else
-                        AnalyzeMethod(ref str, ref pos, VaribleKind.Используемая);   //подпрограмма
+                        AnalyzeMethod(ref str, ref pos, VaribleKind.Используемая, ref global);   //подпрограмма
                     break;
             }
         }
 
-        public  bool CheckMethodParameters(ref string str, ref int pos)
+        public bool CheckMethodParameters(ref string str, ref int pos)
         {
             int temp = pos;
             bool hasParameters = true;
@@ -696,6 +706,10 @@ namespace Метра_форма
                         if (global) FindVaribles(ref str, ref pos, ref GlobalVaribles);
                         else FindVaribles(ref str, ref pos, ref LocalVaribles);
                         break;
+                    case "var":
+                        if (global) FindVaribles(ref str, ref pos, ref GlobalVaribles);
+                        else FindVaribles(ref str, ref pos, ref LocalVaribles);
+                        break;
                     case "function":
                         global = false;
                         LocalVaribles = new Vareble[0];
@@ -851,24 +865,27 @@ namespace Метра_форма
 
             for (int i = 0; i < Variables.Length; i++)
             {
-                if ((Variables[i].kind & VaribleKind.Используемая) != 0)
-                {
-                    if ((int)(Variables[i].kind & VaribleKind.Управляющая) == 4)
-                        dataGridView1.Rows[neededIndex].Cells[(int)VariableIndex.Управляющая].Value +=
-                         Variables[i].name + ", ";
-                    else if ((int)(Variables[i].kind & VaribleKind.Модифицируемая) == 3)
-                        dataGridView1.Rows[neededIndex].Cells[(int)VariableIndex.Модифицируемая].Value +=
-                         Variables[i].name + ", ";
+                if((int)(Variables[i].kind & VaribleKind.Выводимая) != 20 &&
+                    (int)(Variables[i].kind & VaribleKind.Ввод) != 40)
+                    if ((Variables[i].kind & VaribleKind.Используемая) != 0)
+                    {
+                        if ((int)(Variables[i].kind & VaribleKind.Управляющая) == 4)
+                            dataGridView1.Rows[neededIndex].Cells[(int)VariableIndex.Управляющая].Value +=
+                             Variables[i].name + ", ";
+                        else if ((int)(Variables[i].kind & VaribleKind.Модифицируемая) == 3)
+                            dataGridView1.Rows[neededIndex].Cells[(int)VariableIndex.Модифицируемая].Value +=
+                             Variables[i].name + ", ";
+                        else
+                            dataGridView1.Rows[neededIndex].Cells[(int)VariableIndex.Вводимая].Value +=
+                              Variables[i].name + ", ";
+                    }
                     else
-                        dataGridView1.Rows[neededIndex].Cells[(int)VariableIndex.Вводимая].Value +=
-                          Variables[i].name + ", ";
-                }
-                else
-                    dataGridView1.Rows[neededIndex].Cells[(int)VariableIndex.Паразитная].Value +=
-                         Variables[i].name + ", ";
+                        dataGridView1.Rows[neededIndex].Cells[(int)VariableIndex.Паразитная].Value +=
+                             Variables[i].name + ", ";
 
                 //ввод/вывод
-                if ((int)(Variables[i].kind & VaribleKind.Выводимая) == 20 || (int)(Variables[i].kind & VaribleKind.Ввод) == 40)
+                if ((int)(Variables[i].kind & VaribleKind.Выводимая) == 20 ||
+                    (int)(Variables[i].kind & VaribleKind.Ввод) == 40)
                 {
                     if ((Variables[i].kind & VaribleKind.Используемая) != 0)
                     {
