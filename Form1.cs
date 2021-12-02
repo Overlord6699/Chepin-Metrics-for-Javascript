@@ -641,9 +641,9 @@ namespace Метра_форма
             for (int i = 0; i < arr.Length; i++)
                 if ((int)(arr[i].kind & VaribleKind.Используемая) != 0)
                 {
-                    if ((int)(arr[i].kind & VaribleKind.Управляющая) == 4)
+                    if ((int)(arr[i].kind & VaribleKind.Управляющая) == (int)VaribleKind.Управляющая)
                         C++;
-                    else if ((int)(arr[i].kind & VaribleKind.Модифицируемая) == 3)
+                    else if ((int)(arr[i].kind & VaribleKind.Модифицируемая) == (int)VaribleKind.Модифицируемая)
                         M++;
                     else
                         P++;
@@ -653,14 +653,14 @@ namespace Метра_форма
 
             //ввод\вывод
             for(int i = 0; i < arr.Length; i++)
-                if(((int)(arr[i].kind & VaribleKind.Ввод) == 40) ||
-                    ((int)(arr[i].kind & VaribleKind.Выводимая) == 20))
+                if(((int)(arr[i].kind & VaribleKind.Ввод) == (int)VaribleKind.Ввод) ||
+                    ((int)(arr[i].kind & VaribleKind.Выводимая) == (int)VaribleKind.Выводимая))
                 {
                     if ((int)(arr[i].kind & VaribleKind.Используемая) != 0)
                     {
-                        if ((int)(arr[i].kind & VaribleKind.Управляющая) == 4)
+                        if ((int)(arr[i].kind & VaribleKind.Управляющая) == (int)VaribleKind.Управляющая)
                             outC++;
-                        else if ((int)(arr[i].kind & VaribleKind.Модифицируемая) == 3)
+                        else if ((int)(arr[i].kind & VaribleKind.Модифицируемая) == (int)VaribleKind.Модифицируемая)
                             outM++;
                         else
                             outP++;
@@ -808,14 +808,14 @@ namespace Метра_форма
             for (int i = 0; i < Variables.Length; i++)
                 if ((Variables[i].kind & VaribleKind.Используемая) != 0)
                 {
-                    if ((int)(Variables[i].kind & VaribleKind.Выводимая) == 2)
+                    if ((int)(Variables[i].kind & VaribleKind.Выводимая) == (int)VaribleKind.Выводимая)
                     {
-                        if ((int)(Variables[i].kind & VaribleKind.Управляющая) == 4)
+                        if ((int)(Variables[i].kind & VaribleKind.Управляющая) == (int)VaribleKind.Управляющая)
                         {
                             int f = (int)(Variables[i].kind & VaribleKind.Управляющая);
                             Variables[i].kind = VaribleKind.Управляющая | VaribleKind.Выводимая;
                         }
-                        else if ((int)(Variables[i].kind & VaribleKind.Модифицируемая) == 3)
+                        else if ((int)(Variables[i].kind & VaribleKind.Модифицируемая) == (int)VaribleKind.Модифицируемая)
                         {
                             int f = (int)(Variables[i].kind & VaribleKind.Модифицируемая);
                             Variables[i].kind = VaribleKind.Модифицируемая | VaribleKind.Выводимая;
@@ -865,14 +865,12 @@ namespace Метра_форма
 
             for (int i = 0; i < Variables.Length; i++)
             {
-                if((int)(Variables[i].kind & VaribleKind.Выводимая) != 20 &&
-                    (int)(Variables[i].kind & VaribleKind.Ввод) != 40)
                     if ((Variables[i].kind & VaribleKind.Используемая) != 0)
                     {
-                        if ((int)(Variables[i].kind & VaribleKind.Управляющая) == 4)
+                        if ((int)(Variables[i].kind & VaribleKind.Управляющая) == (int)VaribleKind.Управляющая)
                             dataGridView1.Rows[neededIndex].Cells[(int)VariableIndex.Управляющая].Value +=
                              Variables[i].name + ", ";
-                        else if ((int)(Variables[i].kind & VaribleKind.Модифицируемая) == 3)
+                        else if ((int)(Variables[i].kind & VaribleKind.Модифицируемая) == (int)VaribleKind.Модифицируемая)
                             dataGridView1.Rows[neededIndex].Cells[(int)VariableIndex.Модифицируемая].Value +=
                              Variables[i].name + ", ";
                         else
@@ -884,15 +882,15 @@ namespace Метра_форма
                              Variables[i].name + ", ";
 
                 //ввод/вывод
-                if ((int)(Variables[i].kind & VaribleKind.Выводимая) == 20 ||
-                    (int)(Variables[i].kind & VaribleKind.Ввод) == 40)
+                if ((int)(Variables[i].kind & VaribleKind.Выводимая) == (int)VaribleKind.Выводимая ||
+                    (int)(Variables[i].kind & VaribleKind.Ввод) == (int)VaribleKind.Ввод)
                 {
                     if ((Variables[i].kind & VaribleKind.Используемая) != 0)
                     {
-                        if ((int)(Variables[i].kind & VaribleKind.Управляющая) == 4)
+                        if ((int)(Variables[i].kind & VaribleKind.Управляющая) == (int)VaribleKind.Управляющая)
                             dataGridView1.Rows[neededIndex].Cells[4 +(int)VariableIndex.Управляющая].Value +=
                               Variables[i].name + ", ";
-                        else if ((int)(Variables[i].kind & VaribleKind.Модифицируемая) == 3)
+                        else if ((int)(Variables[i].kind & VaribleKind.Модифицируемая) == (int)VaribleKind.Модифицируемая)
                             dataGridView1.Rows[neededIndex].Cells[4 + (int)VariableIndex.Модифицируемая].Value +=
                              Variables[i].name + ", ";
                         else
